@@ -3,7 +3,11 @@ name: Convert Flowcharts to PDF
 on:
   push:
     paths:
-      - '**.md'
+      - 'Practice-*-Flowchart.md'
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build-pdf:
@@ -12,15 +16,31 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Convert Markdown & Mermaid to PDF
-        uses: baumandm/markdown-to-pdf@v1
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          input_dir: .
-          output_dir: pdf-exports
-          extend_config: '{"pdf_options": {"format": "Letter", "landscape": true, "printBackground": true}}'
+          node-version: '20'
+
+      - name: Install Mermaid CLI & Chromium dependencies
+        run: |
+          sudo apt-get update && sudo apt-get install -y libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libasound2
+          npm install -g @mermaid-js/mermaid-cli
+
+      - name: Render Mermaid Diagrams to PDF
+        run: |
+          mkdir -p pdf-exports
+          for file in Practice-*-Flowchart.md; do
+            if [ -f "$file" ]; then
+              base="${file%.md}"
+              echo "Converting $file to pdf-exports/${base}.pdf..."
+              mmdc -i "$file" -o "pdf-exports/${base}.pdf" --pdfFit
+            fi
+          done
 
       - name: Commit generated PDFs back to repo
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "Auto-generate PDF exports for flowcharts"
-          file_pattern: pdf-exports/*.pdf
+        run: |
+          git config --local user.email "github-actions[bot]@://github.com"
+          git config --local user.name "github-actions[bot]"
+          git add pdf-exports/*.pdf
+          git diff --staged --quiet || git commit -m "Auto-generate PDF flowcharts"
+          git push
