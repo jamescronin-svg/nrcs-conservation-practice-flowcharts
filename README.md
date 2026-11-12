@@ -9,6 +9,7 @@ This repository contains visual decision-tree flowcharts and Resource Concern ma
 | **643** | Restoration of Rare or Declining Natural Communities | [View Practice 643 Flowchart](./Practice-643-Flowchart2.md) | Active (FY 2026) |
 | **390** | Riparian Herbaceous Cover | [View Practice 390 Flowchart](./Practice-390-Flowchart.md) | Active (FY 2026) |
 | **420** | Wildlife Habitat Planting | [View Practice 420 Flowchart](./Practice-420-Flowchart.md) | Active (FY 2026) |
+| **422** | Hedgerow Planting | [View Practice 422 Flowchart](./Practice-422-Flowchart.md) | Active (FY 2026) |
 
 ---
 
