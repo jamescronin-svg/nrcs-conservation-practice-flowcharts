@@ -16,6 +16,7 @@ This repository contains visual decision-tree flowcharts and Resource Concern ma
 | **657** | Wetland Restoration | [View Practice 657 Flowchart](./Practice-657-Flowchart.md) | Active (FY 2026) |
 | **658** | Wetland Creation | [View Practice 658 Flowchart](./Practice-658-Flowchart.md) | Active (FY 2026) |
 | **647** | Early Successional Habitat Development–Management | [View Practice 647 Flowchart](./Practice-647-Flowchart.md) | Active (FY 2026) |
+| **659** | Wetland Enhancement | [View Practice 659 Flowchart](./Practice-659-Flowchart.md) | Active (FY 2026) |
 
 ---
 
