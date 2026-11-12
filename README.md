@@ -12,6 +12,7 @@ This repository contains visual decision-tree flowcharts and Resource Concern ma
 | **422** | Hedgerow Planting | [View Practice 422 Flowchart](./Practice-422-Flowchart.md) | Active (FY 2026) |
 | **645** | Wildlife Habitat Management *(formerly Upland Wildlife Habitat Management)* | [View Practice 645 Flowchart](./Practice-645-Flowchart.md) | Active (FY 2026) |
 | **646** | Seasonal Water Management for Wildlife | [View Practice 646 Flowchart](./Practice-646-Flowchart.md) | Active (FY 2026) |
+| **649** | Structures for Wildlife | [View Practice 649 Flowchart](./Practice-649-Flowchart.md) | Active (FY 2026) |
 
 ---
 
