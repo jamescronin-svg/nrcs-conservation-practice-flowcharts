@@ -6,7 +6,8 @@ This repository contains visual decision-tree flowcharts and Resource Concern ma
 
 | Practice Code | Practice Name | Flowchart & Mapping Matrix | Status |
 | :--- | :--- | :--- | :--- |
-| **643** | Restoration of Rare or Declining Natural Communities | [View Practice 643 Flowchart](./Practice-643-Flowchart.md) | Active (FY 2026) |
+| **643** | Restoration of Rare or Declining Natural Communities | [View Practice 643 Flowchart](./Practice-643-Flowchart2.md) | Active (FY 2026) |
+| **390** | Riparian Herbaceous Cover | [View Practice 390 Flowchart](./Practice-390-Flowchart.md) | Active (FY 2026) |
 
 ---
 
