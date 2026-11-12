@@ -23,23 +23,31 @@ jobs:
 
       - name: Install Mermaid CLI & Chromium dependencies
         run: |
-          sudo apt-get update && sudo apt-get install -y libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libasound2
+          sudo apt-get update
+          sudo apt-get install -y libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libasound2t64
           npm install -g @mermaid-js/mermaid-cli
 
-      - name: Render Mermaid Diagrams to PDF
+      - name: Extract Mermaid Diagrams and Render to PDF
         run: |
           mkdir -p pdf-exports
+          printf '{"args": ["--no-sandbox", "--disable-setuid-sandbox"]}\n' > puppeteer-config.json
           for file in Practice-*-Flowchart.md; do
             if [ -f "$file" ]; then
               base="${file%.md}"
-              echo "Converting $file to pdf-exports/${base}.pdf..."
-              mmdc -i "$file" -o "pdf-exports/${base}.pdf" --pdfFit
+              echo "Extracting Mermaid block from $file..."
+              awk '/^```mermaid/{flag=1; next} /^```/{flag=0} flag' "$file" > "${base}.mmd"
+              if [ -s "${base}.mmd" ]; then
+                echo "Rendering ${base}.mmd to pdf-exports/${base}.pdf..."
+                mmdc -p puppeteer-config.json -i "${base}.mmd" -o "pdf-exports/${base}.pdf" --pdfFit
+              fi
+              rm -f "${base}.mmd"
             fi
           done
+          rm -f puppeteer-config.json
 
       - name: Commit generated PDFs back to repo
         run: |
-          git config --local user.email "github-actions[bot]@://github.com"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add pdf-exports/*.pdf
           git diff --staged --quiet || git commit -m "Auto-generate PDF flowcharts"
