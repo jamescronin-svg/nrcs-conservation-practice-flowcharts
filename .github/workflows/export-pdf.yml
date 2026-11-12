@@ -12,6 +12,7 @@ permissions:
 jobs:
   build-pdf:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -21,29 +22,33 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Mermaid CLI & Chromium dependencies
+      - name: Install Mermaid CLI (Skip Chromium Download)
         run: |
-          sudo apt-get update
-          sudo apt-get install -y libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libasound2t64
-          npm install -g @mermaid-js/mermaid-cli
+          PUPPETEER_SKIP_DOWNLOAD=true npm install -g @mermaid-js/mermaid-cli
 
-      - name: Extract Mermaid Diagrams and Render to PDF
+      - name: Create Puppeteer Config for Pre-Installed Chrome
         run: |
-          mkdir -p pdf-exports
-          printf '{"args": ["--no-sandbox", "--disable-setuid-sandbox"]}\n' > puppeteer-config.json
+          cat << 'EOF' > /tmp/puppeteer-config.json
+          {
+            "executablePath": "/usr/bin/google-chrome",
+            "args": ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage", "--disable-gpu"]
+          }
+          EOF
+
+      - name: Render Mermaid Diagrams to PDF
+        run: |
+          mkdir -p pdf-exports /tmp/mmd
           for file in Practice-*-Flowchart.md; do
             if [ -f "$file" ]; then
               base="${file%.md}"
-              echo "Extracting Mermaid block from $file..."
-              awk '/^```mermaid/{flag=1; next} /^```/{flag=0} flag' "$file" > "${base}.mmd"
-              if [ -s "${base}.mmd" ]; then
-                echo "Rendering ${base}.mmd to pdf-exports/${base}.pdf..."
-                mmdc -p puppeteer-config.json -i "${base}.mmd" -o "pdf-exports/${base}.pdf" --pdfFit
+              echo "Extracting Mermaid code from $file..."
+              awk '/^```mermaid/{flag=1; next} /^```/{flag=0} flag' "$file" > "/tmp/mmd/${base}.mmd"
+              if [ -s "/tmp/mmd/${base}.mmd" ]; then
+                echo "Rendering pdf-exports/${base}.pdf..."
+                timeout 45s mmdc -i "/tmp/mmd/${base}.mmd" -o "pdf-exports/${base}.pdf" -p /tmp/puppeteer-config.json --pdfFit
               fi
-              rm -f "${base}.mmd"
             fi
           done
-          rm -f puppeteer-config.json
 
       - name: Commit generated PDFs back to repo
         run: |
