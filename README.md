@@ -13,6 +13,7 @@ This repository contains visual decision-tree flowcharts and Resource Concern ma
 | **645** | Wildlife Habitat Management *(formerly Upland Wildlife Habitat Management)* | [View Practice 645 Flowchart](./Practice-645-Flowchart.md) | Active (FY 2026) |
 | **646** | Seasonal Water Management for Wildlife | [View Practice 646 Flowchart](./Practice-646-Flowchart.md) | Active (FY 2026) |
 | **649** | Structures for Wildlife | [View Practice 649 Flowchart](./Practice-649-Flowchart.md) | Active (FY 2026) |
+| **657** | Wetland Restoration | [View Practice 657 Flowchart](./Practice-657-Flowchart.md) | Active (FY 2026) |
 
 ---
 
