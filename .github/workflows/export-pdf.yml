@@ -1,0 +1,26 @@
+name: Convert Flowcharts to PDF
+
+on:
+  push:
+    paths:
+      - '**.md'
+
+jobs:
+  build-pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Convert Markdown & Mermaid to PDF
+        uses: baumandm/markdown-to-pdf@v1
+        with:
+          input_dir: .
+          output_dir: pdf-exports
+          extend_config: '{"pdf_options": {"format": "Letter", "landscape": true, "printBackground": true}}'
+
+      - name: Commit generated PDFs back to repo
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Auto-generate PDF exports for flowcharts"
+          file_pattern: pdf-exports/*.pdf
